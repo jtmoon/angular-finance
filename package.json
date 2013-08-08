@@ -1,0 +1,24 @@
+{
+  "name": "finance",
+  "version": "0.0.1",
+  "description": "angular finance app localstorage",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "karma start test/karma-unit.conf.js"
+  },
+  "repository": "",
+  "author": "jtm",
+  "license": "BSD",
+  "dependencies": {
+    "uuid": "1.4.1"
+  },
+  "devDependencies": {
+    "grunt"                       : "0.4.1",
+    "grunt-contrib-compress"      : "0.5.2",
+    "grunt-contrib-concat"        : "0.3.0",
+    "grunt-contrib-uglify"        : "0.2.2",
+    "grunt-contrib-watch"         : "0.5.1",
+    "grunt-contrib-jade"          : "0.8.0",
+    "grunt-angular-templates"     : "0.3.10"
+  }
+}

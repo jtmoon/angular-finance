@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="finance">
+  <head>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="javascripts/front.min.js"></script>
+    <title>Finance</title>
+  </head>
+  <body>
+    <h1>Finance</h1>
+    <div class="row">
+      <div class="col-3 navigation">
+        <div ng-controller="TransactionsTypeListController" class="widget types-list">
+          <div class="panel">
+            <div class="panel-heading panel-info">Types
+              <ul class="list-group types">
+                <li ng-repeat="type in types | orderBy:predicate:reverse" class="list-group-item type clearfix">
+                  <div class="title pull-left">{{type.title}}</div>
+                  <div class="count pull-right">{{type.count}}</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div ng-controller="TransactionsListController" class="widget total">
+          <div class="panel">
+            <div ng-bind="income" class="income"></div>
+            <div ng-bind="expenses" class="expenses"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-9 content">
+        <div ng-controller="TransactionsListController" class="transactions-list-container">
+          <div class="actions clearfix"><a class="btn btn-primary pull-right">Add Transaction</a></div>
+          <div class="panel">
+            <div class="panel-heading">Transactions</div>
+            <table class="table table-hover transactions-list">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Title</th>
+                  <th>Type</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="transaction in data.transactions | orderBy:predicate:reverse" class="transaction">
+                  <td>{{prettyDate(transaction.date)}}</td>
+                  <td>{{transaction.title}}</td>
+                  <td>{{transaction.type}}</td>
+                  <td>{{toDollar(transaction.amount)}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

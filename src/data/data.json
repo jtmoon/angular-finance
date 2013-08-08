@@ -1,0 +1,77 @@
+{
+  "start_date": "1372921200000",
+  "transactions": [
+    {
+      "_id"             : "1",
+      "type"            : "income",
+      "amount"          : "200000",
+      "date"            : "1372921200000",
+      "title"           : "Income",
+      "tags"            : ["Income"]
+    },
+    {
+      "_id"             : "2",
+      "type"            : "food",
+      "amount"          : "3000",
+      "date"            : "1372723200000",
+      "title"           : "Cafe Aquarius",
+      "tags"            : ["Cafe Aquarius", "Brunch"]
+    },
+    {
+      "_id"             : "3",
+      "type"            : "food",
+      "amount"          : "4500",
+      "date"            : "1372723200000",
+      "title"           : "Umami Burger",
+      "tags"            : ["Umami Burger", "Lunch"]
+    },
+    {
+      "_id"             : "4",
+      "type"            : "food",
+      "amount"          : "1000",
+      "date"            : "1372723200000",
+      "title"           : "Spoon Rocket",
+      "tags"            : ["Spoon Rocket", "Dinner"]
+    },
+    {
+      "_id"             : "5",
+      "type"            : "utilities",
+      "amount"          : "8900",
+      "date"            : "1373587200000",
+      "title"           : "PG&E",
+      "tags"            : ["PG&E"]
+    },
+    {
+      "_id"             : "6",
+      "type"            : "utilities",
+      "amount"          : "3700",
+      "date"            : "1373587200000",
+      "title"           : "Internet",
+      "tags"            : ["Internet", "WebPass"]
+    },
+    {
+      "_id"             : "7",
+      "type"            : "income",
+      "amount"          : "200000",
+      "date"            : "1373846400000",
+      "title"           : "Income",
+      "tags"            : ["Income"]
+    },
+    {
+      "_id"             : "8",
+      "type"            : "travel",
+      "amount"          : "1300",
+      "date"            : "1373587200000",
+      "title"           : "Uber to MacArthur BART",
+      "tags"            : ["Uber", "Taxi"]
+    },
+    {
+      "_id"             : "9",
+      "type"            : "food",
+      "amount"          : "2500",
+      "date"            : "1373587200000",
+      "title"           : "Sushi",
+      "tags"            : ["Sushi", "Lunch"]
+    }
+  ]
+}
