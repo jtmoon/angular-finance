@@ -29,7 +29,9 @@
       <div class="col-9 content">
         <div ng-controller="TransactionsListController" class="transactions-list-container">
           <div class="panel">
-            <div class="panel-heading">Transactions</div>
+            <div class="panel-heading">Transactions
+              <input type="text" placeholder="Filter" ng-model="query" class="pull-right">
+            </div>
             <table class="table table-hover transactions-list">
               <thead>
                 <tr>
@@ -40,7 +42,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="transaction in data.transactions" class="transaction">
+                <tr ng-repeat="transaction in data.transactions | filter:query" class="transaction">
                   <td>{{prettyDate(transaction.date)}}</td>
                   <td>{{transaction.title}}</td>
                   <td>{{transaction.type}}</td>
