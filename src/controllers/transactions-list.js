@@ -2,21 +2,17 @@
 //    Transactions Controller
 /////
 
-function TransactionsListController($scope, $http, transactionsService) {
+function TransactionsListController($scope, $http, $filter, transactionsService) {
 
-  // Initialize data
-  if(transactionsService.data() === undefined) {
-    $scope.data = transactionsService.fetchJSON();
-  } else {
-    $scope.data = transactionsService.data();
+  function sort() {
+    $scope.data.transactions = _.sortBy($scope.data.transactions, function(transaction) {
+      return -transaction.date;
+    });
   }
 
-  // Params
-  $scope.predicate = 'date';
-
-  /*$scope.data.transactions = _.sortBy($scope.data.transactions, function(transaction) {
-    return transaction.date;
-  });*/
+  // Initialize data
+  if(!$scope.data) $scope.data = transactionsService.data();
+  sort();
 
   $scope.get = function(id) {
     return _.find($scope.data.transactions, function(transaction) {
@@ -75,19 +71,9 @@ function TransactionsListController($scope, $http, transactionsService) {
     return '$' + dollars;
   }
 
-  $scope.calcTotals = function() {
-    $scope.income = 0;
-    $scope.expenses = 0;
-
-    _.each($scope.data.transactions, function(transaction) {
-      if(transaction.type === 'income') {
-        $scope.income += Number(transaction.amount);
-      } else {
-        $scope.expenses += Number(transaction.amount);
-      }
-    });
-  }
-
-  $scope.calcTotals();
+  $scope.$on('transactions-added', function(broadcast, transaction) {
+    $scope.data.transactions = [transaction].concat($scope.data.transactions);
+    sort();
+  });
 
 };

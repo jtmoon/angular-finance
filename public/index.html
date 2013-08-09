@@ -2,11 +2,14 @@
 <html lang="en" ng-app="finance">
   <head>
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/datepicker.css">
     <script src="javascripts/front.min.js"></script>
     <title>Finance</title>
   </head>
   <body>
-    <h1>Finance</h1>
+    <div ng-controller="TransactionsController" class="navbar"><a class="navbar-brand">Finance</a>
+      <div class="actions pull-right"><a data-toggle="modal" data-target="#add-transaction" class="btn btn-primary add-transaction">+ Add transaction</a></div>
+    </div>
     <div class="row">
       <div class="col-3 navigation">
         <div ng-controller="TransactionsTypeListController" class="widget types-list">
@@ -21,16 +24,10 @@
             </div>
           </div>
         </div>
-        <div ng-controller="TransactionsListController" class="widget total">
-          <div class="panel">
-            <div ng-bind="income" class="income"></div>
-            <div ng-bind="expenses" class="expenses"></div>
-          </div>
-        </div>
+        <range-total></range-total>
       </div>
       <div class="col-9 content">
         <div ng-controller="TransactionsListController" class="transactions-list-container">
-          <div class="actions clearfix"><a class="btn btn-primary pull-right">Add Transaction</a></div>
           <div class="panel">
             <div class="panel-heading">Transactions</div>
             <table class="table table-hover transactions-list">
@@ -43,7 +40,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="transaction in data.transactions | orderBy:predicate:reverse" class="transaction">
+                <tr ng-repeat="transaction in data.transactions" class="transaction">
                   <td>{{prettyDate(transaction.date)}}</td>
                   <td>{{transaction.title}}</td>
                   <td>{{transaction.type}}</td>
@@ -51,6 +48,42 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="add-transaction" ng-controller="TransactionController" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+            <h4 class="modal-title">Add Transaction</h4>
+          </div>
+          <div class="modal-body">
+            <form>
+              <fieldset>
+                <div class="form-group">
+                  <label for="title">Title</label>
+                  <input type="text" id="title" placeholder="Title" name="title" ng-model="title" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="amount">Amount</label>
+                  <input type="text" id="amount" placeholder="$0.00" name="amount" ng-model="amount" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="date">Date</label>
+                  <input type="text" id="date" placeholder="" name="date" ng-model="date" class="form-control datepicker-date">
+                </div>
+                <div class="form-group">
+                  <label for="type">Type</label>
+                  <input type="text" id="type" placeholder="e.g. food" name="type" ng-model="type" class="form-control">
+                </div>
+              </fieldset>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+            <button type="button" data-dismiss="modal" ng-click="addTransaction()" class="btn btn-primary save">Add</button>
           </div>
         </div>
       </div>

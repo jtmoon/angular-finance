@@ -77,66 +77,75 @@ var dataJSON = {
 };
 
 angular.module('finance.services', []).factory('transactionsService', ['$http', '$q', '$rootScope', function($http, $q, $rootScope) {
-  var data
-    , transactionsService       = {}
-    , dateRange                 = {};
+  var transactionsService       = {}
+    , _this = this;
+
+  this.data;
+  this.dateRange = {};
 
   transactionsService.fetchJSON = function() {
+    if(localStorage && !localStorage.getItem('data'))  {
+      localStorage.setItem('data', JSON.stringify(dataJSON));
+    }
     return dataJSON;
   };
 
   transactionsService.data = function() {
-    return data;
+    return _this.data || JSON.parse(localStorage.getItem('data')) || this.fetchJSON();
   };
 
   transactionsService.set = function(transactions) {
-    data.transactions = transactions;
-    data.date = Date.now();
+    _this.data.transactions = transactions;
+    _this.data.date = Date.now();
     localStorage.setItem('data', JSON.stringify(data));
-    $rootScope.$broadcast('transactions:updated', transactions);
+    $rootScope.$broadcast('transactions-updated', transactions);
   };
 
   transactionsService.add = function(item) {
-    data.transactions.push(item);
-    $rootScope.$broadcast('transactions:added', item);
+    if(!_this.data) _this.data = this.data();
+
+    _this.data.transactions.push(item);
+    $rootScope.$broadcast('transactions-added', item);
+    this.save(_this.data);
   };
 
   transactionsService.deleteById = function(id) {
-    data.transactions = _.reject(data.transactions, function(transaction) {
+    _this.data.transactions = _.reject(_this.data.transactions, function(transaction) {
       transaction._id === id;
     });
-    $rootScope.$broadcast('transactions:updated', data.transactions);
+    $rootScope.$broadcast('transactions-updated', _this.data.transactions);
   };
 
   transactionsService.getById = function(id) {
-    var transaction = _.find(data.transactions, function(transaction) {
+    var transaction = _.find(_this.data.transactions, function(transaction) {
       return transaction._id = id;
     });
 
     return transaction;
   };
 
-  transactionsService.save = function() {
-    localStorage.setItem('data', JSON.stringify(data));
+  transactionsService.save = function(data) {
+    if(data) localStorage.setItem('data', JSON.stringify(data));
+    else localStorage.setItem('data', JSON.stringify(_this.data));
   };
 
   transactionsService.reset = function() {
-    data = JSON.parse(localStorage.getItem('data'));
-    $rootScope.$broadcast('data:reset', data);
+    _this.data = JSON.parse(localStorage.getItem('data'));
+    $rootScope.$broadcast('data-reset', _this.data);
   };
 
   transactionsService.delete = function() {
-    data = {};
+    _this.data = {};
     localStorage.setItem('data', null);
-    $rootScope.$broadcast('data:deleted');
+    $rootScope.$broadcast('data-deleted');
   };
 
   transactionsService.setStartDate = function(start) {
     var startDate = moment(start);
 
     if(startDate.isValid()) {
-      dateRange.start = start;
-      $rootScope.$broadcast('filter:changed', { start: start });
+      _this.dateRange.start = start;
+      $rootScope.$broadcast('filter-changed', { start: start });
     }
   };
 
@@ -144,17 +153,17 @@ angular.module('finance.services', []).factory('transactionsService', ['$http', 
     var endDate = moment(end);
 
     if(endDate.isValid()) {
-      dateRange.end = end;
-      $rootScope.$broadcast('filter:changed', { end: end });
+      _this.dateRange.end = end;
+      $rootScope.$broadcast('filter-changed', { end: end });
     }
   };
 
   transactionsService.getStartDate = function() {
-    return dateRange.start;
+    return _this.dateRange.start || _this.data.start;
   };
 
   transactionsService.getEndDate = function() {
-    return dateRange.end;
+    return _this.dateRange.end || Date.now();
   };
 
   transactionsService.setDateRange = function(start, end) {
@@ -162,14 +171,14 @@ angular.module('finance.services', []).factory('transactionsService', ['$http', 
       , endDate         = moment(end);
 
     if(startDate.isValid() && endDate.isValid()) {
-      dateRange.start = start;
-      dateRange.end = end;
-      $rootScope.$broadcast('filter:updated', dateRange);
+      _this.dateRange.start = start;
+      _this.dateRange.end = end;
+      $rootScope.$broadcast('filter-updated', dateRange);
     }
   };
 
   transactionsService.getDateRange = function() {
-    return dateRange;
+    return _this.dateRange;
   };
 
   transactionsService.getDates = function(start, end) {
@@ -178,15 +187,15 @@ angular.module('finance.services', []).factory('transactionsService', ['$http', 
 
     if(startDate.isValid() && endDate.isValid()) {
       /*$scope.data.transactions = transactionsService.getDates(start, end);*/
-      var transactions = _.filter(data.transactions, function(transaction) {
+      var transactions = _.filter(_this.data.transactions, function(transaction) {
         var date = moment(Number(transaction.date));
 
         return date > startDate && date < endDate;
       });
     }
 
-    dateRange.start = start;
-    dateRange.end = end;
+    _this.dateRange.start = start;
+    _this.dateRange.end = end;
 
     return transactions;
   };

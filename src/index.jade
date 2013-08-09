@@ -2,10 +2,14 @@ doctype html
 html(lang="en", ng-app="finance")
   head
     link(rel="stylesheet", href="css/bootstrap.min.css")
+    link(rel="stylesheet", href="css/datepicker.css")
     script(src="javascripts/front.min.js")
     title Finance
   body
-    h1 Finance
+    div(class="navbar", ng-controller="TransactionsController")
+      a(class="navbar-brand") Finance
+      div(class="actions pull-right")
+        a(data-toggle="modal", data-target="#add-transaction", class="btn btn-primary add-transaction") + Add transaction
     div(class="row")
       div(class="col-3 navigation")
         div(class="widget types-list", ng-controller="TransactionsTypeListController")
@@ -15,16 +19,10 @@ html(lang="en", ng-app="finance")
                 li(class="list-group-item type clearfix", ng-repeat="type in types | orderBy:predicate:reverse")
                   div(class="title pull-left") {{type.title}}
                   div(class="count pull-right") {{type.count}}
-
-        div(class="widget total", ng-controller="TransactionsListController")
-          div(class="panel")
-            div(class="income", ng-bind="income")
-            div(class="expenses", ng-bind="expenses")
+        range-total
 
       div(class="col-9 content")
         div(class="transactions-list-container", ng-controller="TransactionsListController")
-          div(class="actions clearfix")
-            a(class="btn btn-primary pull-right") Add Transaction
           div(class="panel")
             div(class="panel-heading") Transactions
             table(class="table table-hover transactions-list")
@@ -35,8 +33,33 @@ html(lang="en", ng-app="finance")
                   th Type
                   th Amount
               tbody
-                tr(class="transaction", ng-repeat="transaction in data.transactions | orderBy:predicate:reverse")
+                tr(class="transaction", ng-repeat="transaction in data.transactions")
                   td {{prettyDate(transaction.date)}}
                   td {{transaction.title}}
                   td {{transaction.type}}
                   td {{toDollar(transaction.amount)}}
+    //- Add Transaction Modal
+    div(id="add-transaction", class="modal fade", ng-controller="TransactionController")
+      div(class="modal-dialog")
+        div(class="modal-content")
+          div(class="modal-header")
+            button(type="button", class="close", data-dismiss="modal", aria-hidden="true")&times;
+            h4(class="modal-title") Add Transaction
+          div(class="modal-body")
+            form
+              fieldset
+                div(class="form-group")
+                  label(for="title") Title
+                  input(type="text", class="form-control", id="title", placeholder="Title", name="title", ng-model="title")
+                div(class="form-group")
+                  label(for="amount") Amount
+                  input(type="text", class="form-control", id="amount", placeholder="$0.00", name="amount", ng-model="amount")
+                div(class="form-group")
+                  label(for="date") Date
+                  input(type="text", class="form-control datepicker-date", id="date", placeholder="", name="date", ng-model="date")
+                div(class="form-group")
+                  label(for="type") Type
+                  input(type="text", class="form-control", id="type", placeholder="e.g. food", name="type", ng-model="type")
+          div(class="modal-footer")
+            button(type="button", class="btn btn-default", data-dismiss="modal") Close
+            button(type="button", class="btn btn-primary save", data-dismiss="modal", ng-click="addTransaction()") Add
