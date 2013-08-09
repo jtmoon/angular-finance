@@ -1,7 +1,7 @@
 describe('Finance App', function() {
 
   beforeEach(function() {
-    browser().navigateTo('/');
+    browser().navigateTo('../../public/index.html');
   });
 
   it('should add transaction', function() {
