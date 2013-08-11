@@ -5,7 +5,7 @@ describe('Finance App', function() {
   });
 
   it('should add transaction', function() {
-    expect(repeater('.transactions-list .transaction').count()).toBe(0);
+    expect(repeater('.transactions-list .transaction').count()).toBe(9);
 
     element('.add-transaction').click();
     input('title').enter('Coffee Bean');
@@ -14,7 +14,7 @@ describe('Finance App', function() {
     input('type').enter('food');
     element('.save').click();
 
-    expect(repeater('.transactions-list .transaction').count()).toBe(1);
+    expect(repeater('.transactions-list .transaction').count()).toBe(10);
   });
 
 });

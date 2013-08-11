@@ -10,7 +10,9 @@
   "author": "jtm",
   "license": "BSD",
   "dependencies": {
-    "uuid": "1.4.1"
+    "uuid": "1.4.1",
+    "express": "3.3.5",
+    "jade": "0.34.1"
   },
   "devDependencies": {
     "grunt"                       : "0.4.1",
